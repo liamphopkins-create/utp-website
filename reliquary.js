@@ -236,6 +236,14 @@ const rememberText =
 const soundtrackLink =
     document.getElementById("soundtrack-link");
 
+const rememberMeasure =
+    document.getElementById("remember-measure");
+
+const soundtrackLinkMeasure =
+    document.getElementById(
+        "soundtrack-link-measure"
+    );
+
 
 const endingWhite =
     endingOverlay.querySelector(
@@ -453,8 +461,8 @@ const relicData = {
         ],
 
         dialogue: [
-            "TO WITNESS THINGS DEEMED SUPERNATURAL IS TO STAND APART FROM OTHERS.",
-            "IN THE UNDERGROUND, EVEN THE EARTH WITNESSES COUNTLESS THINGS LEFT UNEXPLAINED.",
+            "BEARING WITNESS TO THINGS DEEMED SUPERNATURAL IS TO STAND APART FROM OTHERS.",
+            "IN THE UNDERGROUND, EVEN THE EARTH BEARS WITNESS TO COUNTLESS THINGS LEFT UNEXPLAINED.",
             "WHEN THE WOOD BEARS ITS TESTIMONY, WILL HOPE ACCEPT WHAT STANDS BEFORE THEM?"
         ]
     },
@@ -2111,25 +2119,58 @@ function cancelAudioFade(
     }
 }
 
-function typeEndingText(
+function prepareMeasuredTyping(
     element,
+    measureElement,
     text,
-    speed,
+    maximumWidth
+) {
+    measureElement.textContent =
+        text;
+
+    measureElement.style.width =
+        "max-content";
+
+    const measuredWidth =
+        Math.min(
+            Math.ceil(
+                measureElement
+                    .getBoundingClientRect()
+                    .width
+            ) + 4,
+            maximumWidth
+        );
+
+    element.style.width =
+        `${measuredWidth}px`;
+}
+
+
+function typeMeasuredEndingText(
+    element,
+    measureElement,
+    text,
     done
 ) {
-    if (!element) {
-        if (done) {
-            done();
-        }
+    clearTimeout(
+        element._typingTimer
+    );
 
-        return;
-    }
+    prepareMeasuredTyping(
+        element,
+        measureElement,
+        text,
+        Math.min(
+            1120,
+            window.innerWidth * 0.92
+        )
+    );
 
     element.textContent = "";
 
     let characterIndex = 0;
 
-    function typeNextCharacter() {
+    function typeNextEndingCharacter() {
         if (
             characterIndex >=
             text.length
@@ -2141,20 +2182,26 @@ function typeEndingText(
             return;
         }
 
-        element.textContent +=
+        const character =
             text.charAt(
                 characterIndex
             );
 
+        element.textContent +=
+            character;
+
         characterIndex += 1;
 
-        setTimeout(
-            typeNextCharacter,
-            speed
-        );
+        element._typingTimer =
+            setTimeout(
+                typeNextEndingCharacter,
+                getCharacterDelay(
+                    character
+                )
+            );
     }
 
-    typeNextCharacter();
+    typeNextEndingCharacter();
 }
 
 
@@ -2171,16 +2218,16 @@ function beginSoundtrackEnding() {
     );
 
     setTimeout(() => {
-        typeEndingText(
+        typeMeasuredEndingText(
             rememberText,
+            rememberMeasure,
             "SHOULD YOU WISH TO REMEMBER.",
-            65,
             () => {
                 setTimeout(() => {
-                    typeEndingText(
+                    typeMeasuredEndingText(
                         soundtrackLink,
+                        soundtrackLinkMeasure,
                         "ORIGINAL SOUNDTRACK",
-                        65,
                         () => {
                             setTimeout(() => {
                                 soundtrackBack.hidden =
@@ -2239,7 +2286,8 @@ soundtrackBack.addEventListener(
     (event) => {
         event.stopPropagation();
 
-        window.history.back();
+        window.location.href =
+            "index.html";
     }
 );
 

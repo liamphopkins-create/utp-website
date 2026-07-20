@@ -315,7 +315,7 @@
         </section>
 
 
-        <!-- Test Comment Glorp -->
+        <!-- Dialogue -->
 
         <section
             class="reading-stage"
@@ -423,14 +423,30 @@
     ></audio>
 
     <div id="soundtrack-end" hidden>
-        <p id="remember-text"></p>
+        <div class="soundtrack-line-wrap">
+            <p
+                id="remember-measure"
+                class="soundtrack-measure"
+                aria-hidden="true"
+            ></p>
 
-        <a
-            id="soundtrack-link"
-            href="https://youtube.com/playlist?list=PLGmXJL9mH-vE&si=1ch_hXn9qkR9vegV"
-            target="_blank"
-            rel="noopener noreferrer"
-        ></a>
+            <p id="remember-text"></p>
+        </div>
+
+        <div class="soundtrack-line-wrap">
+            <span
+                id="soundtrack-link-measure"
+                class="soundtrack-measure soundtrack-link-measure"
+                aria-hidden="true"
+            ></span>
+
+            <a
+                id="soundtrack-link"
+                href="https://youtube.com/playlist?list=PLGmXJL9mH-vE&si=1ch_hXn9qkR9vegV"
+                target="_blank"
+                rel="noopener noreferrer"
+            ></a>
+        </div>
 
         <button
             id="soundtrack-back"

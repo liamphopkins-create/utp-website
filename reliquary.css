@@ -51,7 +51,7 @@ img {
 .star-field {
     position: fixed;
     inset: 0;
-    z-index: 1;
+    z-index: 3;
 
     overflow: hidden;
     pointer-events: none;
@@ -81,9 +81,12 @@ img {
         scale(0.2);
 
     box-shadow:
-        0 0 6px var(--star-color),
-        0 0 14px var(--star-color),
-        0 0 25px var(--star-color);
+        0 0 7px var(--star-color),
+        0 0 18px var(--star-color),
+        0 0 34px var(--star-color);
+
+    filter:
+        brightness(1.35);
 
     animation:
         star-flicker
@@ -130,7 +133,7 @@ img {
     }
 
     69% {
-        opacity: 0.6;
+        opacity: 0.78;
     }
 
     78% {
@@ -142,7 +145,7 @@ img {
     }
 
     87% {
-        opacity: 0.7;
+        opacity: 0.86;
     }
 
     96% {
@@ -1779,25 +1782,78 @@ img {
     display: none;
 }
 
+.soundtrack-line-wrap {
+    position: relative;
+
+    display: flex;
+    justify-content: center;
+
+    width: min(1120px, 92vw);
+}
+
+.soundtrack-measure {
+    position: absolute;
+
+    width: max-content;
+    max-width: min(1120px, 92vw);
+
+    visibility: hidden;
+    pointer-events: none;
+
+    font-family:
+        "Courier New",
+        Courier,
+        monospace;
+
+    font-size:
+        clamp(21px, 2.15vw, 31px);
+
+    font-weight: bold;
+    line-height: 1.48;
+    letter-spacing: 1.05px;
+
+    white-space: pre-wrap;
+}
+
+.soundtrack-link-measure {
+    text-decoration-line: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 7px;
+}
+
 #remember-text {
     min-height: 1.5em;
     margin: 0 0 28px;
 
     color: #ffffff;
 
-    font-size: clamp(20px, 2vw, 30px);
+    font-size:
+        clamp(21px, 2.15vw, 31px);
+
     font-weight: bold;
-    letter-spacing: 1px;
+    line-height: 1.48;
+    letter-spacing: 1.05px;
+
+    text-align: left;
+    white-space: pre-wrap;
 }
 
 #soundtrack-link {
+    display: block;
+
     min-height: 1.5em;
 
     color: #ffffff;
 
-    font-size: clamp(22px, 2.2vw, 32px);
+    font-size:
+        clamp(21px, 2.15vw, 31px);
+
     font-weight: bold;
-    letter-spacing: 1px;
+    line-height: 1.48;
+    letter-spacing: 1.05px;
+
+    text-align: left;
+    white-space: pre-wrap;
 
     text-decoration-line: underline;
     text-decoration-thickness: 2px;
@@ -1924,9 +1980,6 @@ img {
         0 0 14px
         rgba(181, 70, 255, 0.5);
 }
-
-
-
 
 #volume-panel {
     margin-bottom: 10px;
