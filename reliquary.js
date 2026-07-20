@@ -1253,30 +1253,26 @@ function typeNextCharacter() {
             dialogueLineIndex
         ];
 
-    if (
-        dialogueCharacterIndex >=
-        line.length
-    ) {
-        finishTypedLine();
-        return;
-    }
+    typeDialogueStyleText({
+        element: relicDialogue,
+        text: line,
 
-    const character =
-        line.charAt(
-            dialogueCharacterIndex
-        );
+        getIndex: () =>
+            dialogueCharacterIndex,
 
-    relicDialogue.textContent +=
-        character;
+        setIndex: (nextIndex) => {
+            dialogueCharacterIndex =
+                nextIndex;
+        },
 
-    dialogueCharacterIndex += 1;
+        setTimer: (timer) => {
+            dialogueTimer =
+                timer;
+        },
 
-    dialogueTimer = setTimeout(
-        typeNextCharacter,
-        getCharacterDelay(
-            character
-        )
-    );
+        onComplete:
+            finishTypedLine
+    });
 }
 
 
@@ -1294,6 +1290,57 @@ function getCharacterDelay(character) {
     }
 
     return typeSpeed;
+}
+
+
+function typeDialogueStyleText({
+    element,
+    text,
+    getIndex,
+    setIndex,
+    setTimer,
+    onComplete
+}) {
+    const characterIndex =
+        getIndex();
+
+    if (
+        characterIndex >=
+        text.length
+    ) {
+        onComplete();
+        return;
+    }
+
+    const character =
+        text.charAt(
+            characterIndex
+        );
+
+    element.textContent +=
+        character;
+
+    setIndex(
+        characterIndex + 1
+    );
+
+    setTimer(
+        setTimeout(
+            () => {
+                typeDialogueStyleText({
+                    element,
+                    text,
+                    getIndex,
+                    setIndex,
+                    setTimer,
+                    onComplete
+                });
+            },
+            getCharacterDelay(
+                character
+            )
+        )
+    );
 }
 
 
@@ -2170,38 +2217,29 @@ function typeMeasuredEndingText(
 
     let characterIndex = 0;
 
-    function typeNextEndingCharacter() {
-        if (
-            characterIndex >=
-            text.length
-        ) {
+    typeDialogueStyleText({
+        element,
+        text,
+
+        getIndex: () =>
+            characterIndex,
+
+        setIndex: (nextIndex) => {
+            characterIndex =
+                nextIndex;
+        },
+
+        setTimer: (timer) => {
+            element._typingTimer =
+                timer;
+        },
+
+        onComplete: () => {
             if (done) {
                 done();
             }
-
-            return;
         }
-
-        const character =
-            text.charAt(
-                characterIndex
-            );
-
-        element.textContent +=
-            character;
-
-        characterIndex += 1;
-
-        element._typingTimer =
-            setTimeout(
-                typeNextEndingCharacter,
-                getCharacterDelay(
-                    character
-                )
-            );
-    }
-
-    typeNextEndingCharacter();
+    });
 }
 
 
@@ -2217,8 +2255,7 @@ function beginSoundtrackEnding() {
         "visible"
     );
 
-    setTimeout(() => {
-        typeMeasuredEndingText(
+    typeMeasuredEndingText(
             rememberText,
             rememberMeasure,
             "SHOULD YOU WISH TO REMEMBER.",
@@ -2252,7 +2289,6 @@ function beginSoundtrackEnding() {
                 }, 800);
             }
         );
-    }, 3000);
 }
 
 
@@ -2284,10 +2320,18 @@ function updateVolumeDisplay() {
 soundtrackBack.addEventListener(
     "click",
     (event) => {
+        event.preventDefault();
         event.stopPropagation();
 
-        window.location.href =
-            "index.html";
+        const homePageUrl =
+            new URL(
+                "./index.html",
+                window.location.href
+            );
+
+        window.location.replace(
+            homePageUrl.href
+        );
     }
 );
 

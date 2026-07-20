@@ -86,7 +86,7 @@ img {
         0 0 34px var(--star-color);
 
     filter:
-        brightness(1.35);
+        brightness(1.45);
 
     animation:
         star-flicker
@@ -133,7 +133,7 @@ img {
     }
 
     69% {
-        opacity: 0.78;
+        opacity: 0.92;
     }
 
     78% {
