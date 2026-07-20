@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="A hidden path toward completion."
+    >
+
+    <title>COMPLETION</title>
+
+    <link rel="stylesheet" href="completion.css">
+</head>
+
+<body>
+
+    <main class="completion-screen">
+
+        <section
+            class="dialogue-container"
+            aria-live="polite"
+        >
+
+            <div class="dialogue-area">
+
+    <div class="completion-dialogue-position">
+
+        <p
+            class="completion-dialogue-measure"
+            id="completion-dialogue-measure"
+            aria-hidden="true"
+        ></p>
+
+        <p
+            class="dialogue-text"
+            id="dialogue-text"
+        ></p>
+
+    </div>
+
+</div>
+
+            <div
+                class="choice-list"
+                id="choice-list"
+                hidden
+            >
+
+                <button
+                    class="choice-button violent-choice"
+                    type="button"
+                    data-choice="violent"
+                    data-label="VIOLENTLY"
+                >
+                    <span class="choice-placeholder">
+                        VIOLENTLY
+                    </span>
+
+                    <span
+                        class="choice-typed"
+                        aria-hidden="true"
+                    ></span>
+                </button>
+
+                <button
+                    class="choice-button peaceful-choice"
+                    type="button"
+                    data-choice="peaceful"
+                    data-label="PEACEFULLY"
+                >
+                    <span class="choice-placeholder">
+                        PEACEFULLY
+                    </span>
+
+                    <span
+                        class="choice-typed"
+                        aria-hidden="true"
+                    ></span>
+                </button>
+
+                <button
+                    class="choice-button pragmatic-choice"
+                    type="button"
+                    data-choice="pragmatic"
+                    data-label="PRAGMATICALLY"
+                >
+                    <span class="choice-placeholder">
+                        PRAGMATICALLY
+                    </span>
+
+                    <span
+                        class="choice-typed"
+                        aria-hidden="true"
+                    ></span>
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <div
+        class="fade-screen"
+        id="fade-screen"
+        aria-hidden="true"
+    ></div>
+
+    <script src="completion.js"></script>
+
+</body>
+
+</html>

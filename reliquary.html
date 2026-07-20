@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="The Reliquary."
+    >
+
+    <title>RELIQUARY</title>
+
+    <link rel="stylesheet" href="reliquary.css">
+</head>
+
+<body>
+
+    <!-- Main background stars -->
+
+    <div
+        class="star-field"
+        id="star-field"
+        aria-hidden="true"
+    ></div>
+
+
+    <!-- Door sequence -->
+
+    <main
+        class="door-scene"
+        id="door-scene"
+    >
+
+        <span
+            class="door-pixel"
+            id="door-pixel"
+            aria-hidden="true"
+        ></span>
+
+        <div
+            class="door-reveal"
+            id="door-reveal"
+        >
+
+            <button
+                class="door-button"
+                id="door-button"
+                type="button"
+                aria-label="Enter the Reliquary"
+                disabled
+            >
+
+                <img
+                    class="pixel-image door-image"
+                    id="door-image"
+                    src="images/relic-door.png"
+                    alt=""
+                    draggable="false"
+                >
+
+            </button>
+
+        </div>
+
+    </main>
+
+
+    <!-- Reliquary -->
+
+    <main
+        class="reliquary-scene"
+        id="reliquary-scene"
+        hidden
+    >
+
+        <!-- Main relic gallery -->
+
+        <section
+            class="relic-gallery"
+            id="relic-gallery"
+            aria-label="The Reliquary"
+        >
+
+            <!-- Invitation -->
+
+            <article
+                class="relic-slot"
+                data-relic="invitation"
+            >
+
+                <button
+                    class="relic-button"
+                    type="button"
+                    aria-label="The Invitation"
+                >
+
+                    <span class="relic-visual">
+
+                        <span class="relic-image-space">
+
+                            <img
+                                class="pixel-image relic-image"
+                                src="images/invitation.png"
+                                alt="The Invitation"
+                                draggable="false"
+                            >
+
+                        </span>
+
+                        <img
+                            class="pixel-image pedestal-image"
+                            src="images/relic-ped.png"
+                            alt=""
+                            aria-hidden="true"
+                            draggable="false"
+                        >
+
+                    </span>
+
+                </button>
+
+                <span class="relic-title">
+                    The Invitation
+                </span>
+
+            </article>
+
+
+            <!-- Witness -->
+
+            <article
+                class="relic-slot"
+                data-relic="witness"
+            >
+
+                <button
+                    class="relic-button"
+                    type="button"
+                    aria-label="The Witness"
+                >
+
+                    <span class="relic-visual">
+
+                        <span class="relic-image-space">
+
+                            <img
+                                class="pixel-image relic-image"
+                                src="images/witness.png"
+                                alt="The Witness"
+                                draggable="false"
+                            >
+
+                        </span>
+
+                        <img
+                            class="pixel-image pedestal-image"
+                            src="images/relic-ped.png"
+                            alt=""
+                            aria-hidden="true"
+                            draggable="false"
+                        >
+
+                    </span>
+
+                </button>
+
+                <span class="relic-title">
+                    The Witness
+                </span>
+
+            </article>
+
+
+            <!-- Authority -->
+
+            <article
+                class="relic-slot"
+                data-relic="authority"
+            >
+
+                <button
+                    class="relic-button"
+                    type="button"
+                    aria-label="The Authority"
+                >
+
+                    <span class="relic-visual">
+
+                        <span class="relic-image-space">
+
+                            <img
+                                class="pixel-image relic-image"
+                                src="images/authority.png"
+                                alt="The Authority"
+                                draggable="false"
+                            >
+
+                        </span>
+
+                        <img
+                            class="pixel-image pedestal-image"
+                            src="images/relic-ped.png"
+                            alt=""
+                            aria-hidden="true"
+                            draggable="false"
+                        >
+
+                    </span>
+
+                </button>
+
+                <span class="relic-title">
+                    The Authority
+                </span>
+
+            </article>
+
+
+            <!-- Synthesis -->
+
+            <article
+                class="relic-slot"
+                data-relic="synthesis"
+            >
+
+                <button
+                    class="relic-button"
+                    type="button"
+                    aria-label="The Synthesis"
+                >
+
+                    <span class="relic-visual">
+
+                        <span class="relic-image-space">
+
+                            <img
+                                class="pixel-image relic-image"
+                                src="images/synthesis.png"
+                                alt="The Synthesis"
+                                draggable="false"
+                            >
+
+                        </span>
+
+                        <img
+                            class="pixel-image pedestal-image"
+                            src="images/relic-ped.png"
+                            alt=""
+                            aria-hidden="true"
+                            draggable="false"
+                        >
+
+                    </span>
+
+                </button>
+
+                <span class="relic-title">
+                    The Synthesis
+                </span>
+
+            </article>
+
+        </section>
+
+
+        <!--
+            The clicked relic is cloned into this layer,
+            then smoothly moved from its original position.
+        -->
+
+        <div
+            class="focus-layer"
+            id="focus-layer"
+            aria-hidden="true"
+        ></div>
+
+
+        <!-- Fragment -->
+
+        <section
+            class="fragment-stage"
+            id="fragment-stage"
+            hidden
+        >
+
+            <div
+                class="fragment-travel-stars"
+                id="fragment-travel-stars"
+                aria-hidden="true"
+            ></div>
+
+            <button
+                class="fragment-button"
+                id="fragment-button"
+                type="button"
+                aria-label="The Fragment"
+            >
+
+                <img
+                    class="pixel-image fragment-image"
+                    id="fragment-image"
+                    src="images/fragment.png"
+                    alt="The Fragment"
+                    draggable="false"
+                >
+
+            </button>
+
+        </section>
+
+
+        <!-- Dialogue -->
+
+        <section
+            class="reading-stage"
+            id="reading-stage"
+            aria-live="polite"
+            hidden
+        >
+
+            <div class="dialogue-position">
+
+                <div
+                    class="dialogue-measure"
+                    id="dialogue-measure"
+                    aria-hidden="true"
+                ></div>
+
+                <p
+                    class="relic-dialogue"
+                    id="relic-dialogue"
+                ></p>
+
+            </div>
+
+            <div class="return-space">
+
+                <button
+                    class="return-button"
+                    id="return-button"
+                    type="button"
+                    hidden
+                >
+                    RETURN
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- Screen fade -->
+
+    <div
+        class="scene-fade"
+        id="scene-fade"
+        aria-hidden="true"
+    ></div>
+
+
+    <!-- Audio -->
+
+    <audio
+        id="door-sound"
+        src="audio/snd-door.wav"
+        preload="auto"
+    ></audio>
+
+    <audio
+        id="reliquary-music"
+        src="audio/mus-completion.wav"
+        preload="auto"
+        loop
+    ></audio>
+
+    <audio
+        id="music-invitation"
+        src="audio/mus-circus-tease.wav"
+        preload="auto"
+        loop
+    ></audio>
+
+    <audio
+    id="credits-noise"
+    src="audio/mus-credits-noise.ogg"
+    preload="auto"
+></audio>
+
+    <audio
+        id="music-witness"
+        src="audio/mus-fw-tease.wav"
+        preload="auto"
+        loop
+    ></audio>
+
+    <audio
+        id="music-authority"
+        src="audio/mus-containment-tease.wav"
+        preload="auto"
+        loop
+    ></audio>
+
+    <audio
+        id="music-synthesis"
+        src="audio/mus-core-tease.wav"
+        preload="auto"
+        loop
+    ></audio>
+
+    <audio
+        id="music-fragment"
+        src="audio/mus-doctor.wav"
+        preload="auto"
+        loop
+    ></audio>
+
+
+
+
+   <div id="soundtrack-end" hidden>
+
+    <p id="remember-text"></p>
+
+    <a
+        id="soundtrack-link"
+        href="https://youtube.com/playlist?list=PLGmXJL9mH-vE&si=1ch_hXn9qkR9vegV"
+        target="_blank"
+        rel="noopener noreferrer"
+    ></a>
+
+</div>
+
+<script src="reliquary.js"></script>
+
+</body>
+</html>

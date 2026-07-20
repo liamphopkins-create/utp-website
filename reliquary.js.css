@@ -1,0 +1,281 @@
+
+/*
+    ===================================================
+    FINAL RELIQUARY PATCH
+    Paste this at the VERY BOTTOM of reliquary.css.
+    ===================================================
+*/
+
+
+/*
+    The reveal delay is now assigned by JavaScript
+    according to the relic's CURRENT visible position,
+    not its original nth-child position.
+*/
+
+.relic-gallery.revealing
+.relic-slot {
+    transition-delay: 0ms;
+}
+
+
+/*
+    Smooth Fragment travel-star entrance.
+*/
+
+.fragment-travel-stars {
+    opacity: 0;
+
+    transition:
+        opacity 1.8s ease;
+}
+
+.fragment-travel-stars.visible {
+    opacity: 1;
+}
+
+.fragment-travel-stars.ending {
+    opacity: 0;
+
+    transition:
+        opacity 1.2s ease;
+}
+
+
+/*
+    Fragment rises out of frame after its final line.
+*/
+
+.fragment-stage.ending-rise
+.fragment-button {
+    pointer-events: none;
+
+    animation:
+        fragment-ending-rise
+        2.5s
+        cubic-bezier(0.45, 0, 0.55, 1)
+        forwards;
+}
+
+.fragment-stage.ending-rise
+.fragment-image {
+    animation: none;
+}
+
+@keyframes fragment-ending-rise {
+    from {
+        transform:
+            translateY(0);
+    }
+
+    to {
+        transform:
+            translateY(-72vh);
+    }
+}
+
+
+/*
+    ===================================================
+    ENDING / CREDITS
+    ===================================================
+*/
+
+.reliquary-ending {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+
+    overflow: hidden;
+
+    pointer-events: none;
+}
+
+.reliquary-ending[hidden] {
+    display: none;
+}
+
+.ending-white,
+.ending-black {
+    position: absolute;
+    inset: 0;
+}
+
+.ending-white {
+    z-index: 1;
+
+    background: #ffffff;
+
+    opacity: 0;
+
+    transition:
+        opacity 1.5s ease;
+}
+
+.ending-white.visible {
+    opacity: 1;
+}
+
+.ending-black {
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #000000;
+
+    opacity: 0;
+
+    transition:
+        opacity 1.5s ease;
+}
+
+.ending-black.visible {
+    opacity: 1;
+}
+
+.ending-question {
+    position: absolute;
+    z-index: 2;
+
+    width: min(920px, 88vw);
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size:
+        clamp(18px, 2vw, 27px);
+
+    font-weight: bold;
+    line-height: 1.55;
+    letter-spacing: 1px;
+
+    text-align: center;
+
+    opacity: 1;
+
+    transition:
+        opacity 700ms ease;
+}
+
+.ending-question.hidden {
+    opacity: 0;
+}
+
+.credits-window {
+    position: absolute;
+    inset: 0;
+
+    overflow: hidden;
+
+    opacity: 0;
+
+    transition:
+        opacity 1.2s ease;
+}
+
+.credits-window.visible {
+    opacity: 1;
+}
+
+.credits-scroll {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+
+    width: min(700px, 84vw);
+
+    color: #ffffff;
+
+    text-align: center;
+
+    transform:
+        translateX(-50%);
+
+    animation:
+        credits-rise
+        36s
+        linear
+        forwards;
+}
+
+.credits-scroll h1 {
+    margin:
+        0 0 12px;
+
+    font-size:
+        clamp(25px, 3vw, 42px);
+
+    letter-spacing: 2px;
+}
+
+.credits-scroll h2 {
+    margin:
+        0 0 150px;
+
+    font-size:
+        clamp(17px, 2vw, 26px);
+
+    letter-spacing: 2px;
+}
+
+.credits-scroll section {
+    margin-bottom: 140px;
+}
+
+.credits-scroll h3 {
+    margin:
+        0 0 38px;
+
+    font-size:
+        clamp(19px, 2.2vw, 29px);
+
+    letter-spacing: 2px;
+}
+
+.credits-scroll p {
+    margin:
+        0 0 15px;
+
+    font-size:
+        clamp(16px, 1.55vw, 22px);
+
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.credits-scroll section p:nth-of-type(even) {
+    margin-bottom: 38px;
+
+    color:
+        rgba(255, 255, 255, 0.68);
+}
+
+.credits-end {
+    margin-top: 170px !important;
+    margin-bottom: 45vh !important;
+}
+
+@keyframes credits-rise {
+    from {
+        transform:
+            translate(-50%, 0);
+    }
+
+    to {
+        transform:
+            translate(-50%, calc(-100% - 100vh));
+    }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+
+    .fragment-travel-stars,
+    .fragment-stage.ending-rise
+    .fragment-button,
+    .credits-scroll {
+        animation-duration: 1ms;
+    }
+}

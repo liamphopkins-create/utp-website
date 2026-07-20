@@ -1,0 +1,368 @@
+/*
+    ---------------------------------------------------
+    PAGE RESET
+    ---------------------------------------------------
+*/
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    overflow: hidden;
+
+    background-color: #000000;
+    color: #ffffff;
+
+    font-family:
+        "Courier New",
+        Courier,
+        monospace;
+}
+
+
+/*
+    ---------------------------------------------------
+    FULL SCREEN LAYOUT
+    ---------------------------------------------------
+*/
+
+.completion-screen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 100vh;
+
+    padding: 24px;
+}
+
+
+/*
+    This contains both the dialogue and choices.
+
+    The fixed height prevents the entire layout from
+    moving when the choices appear.
+*/
+
+.dialogue-container {
+    display: grid;
+    grid-template-rows: 130px 180px;
+    align-items: start;
+
+    width: min(940px, 100%);
+    height: 310px;
+
+    text-align: center;
+}
+
+
+/*
+    ---------------------------------------------------
+    DIALOGUE
+    ---------------------------------------------------
+*/
+
+.dialogue-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 130px;
+}
+
+
+/*
+    The complete sentence is centered as one block.
+
+    The text itself types from left to right.
+*/
+
+.dialogue-text {
+    width: 100%;
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: clamp(20px, 2.4vw, 30px);
+    font-weight: bold;
+    line-height: 1.6;
+    letter-spacing: 1px;
+
+    text-align: center;
+    white-space: pre-wrap;
+}
+
+
+/*
+    ---------------------------------------------------
+    CHOICE LAYOUT
+    ---------------------------------------------------
+
+    Upside-down triangle:
+
+    VIOLENTLY                 PEACEFULLY
+
+               PRAGMATICALLY
+*/
+
+.choice-list {
+    display: grid;
+
+    grid-template-columns:
+        minmax(220px, 300px)
+        minmax(220px, 300px);
+
+    grid-template-rows:
+        54px
+        54px;
+
+    grid-template-areas:
+        "violent peaceful"
+        "pragmatic pragmatic";
+
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+
+    width: 100%;
+    height: 180px;
+
+    padding-top: 28px;
+
+    column-gap: 80px;
+    row-gap: 28px;
+}
+
+.choice-list[hidden] {
+    display: none;
+}
+
+.violent-choice {
+    grid-area: violent;
+}
+
+.peaceful-choice {
+    grid-area: peaceful;
+}
+
+.pragmatic-choice {
+    grid-area: pragmatic;
+}
+
+
+/*
+    ---------------------------------------------------
+    CHOICE BUTTONS
+    ---------------------------------------------------
+*/
+
+.choice-button {
+    position: relative;
+
+    display: block;
+
+    width: 260px;
+    height: 48px;
+    padding: 0;
+
+    border: none;
+    background: transparent;
+    color: #ffffff;
+
+    font: inherit;
+    font-size: clamp(18px, 2vw, 25px);
+    font-weight: bold;
+    letter-spacing: 1px;
+
+    text-align: center;
+
+    cursor: default;
+}
+
+
+/*
+    This invisible copy keeps the full final word
+    measured and centered before typing begins.
+*/
+
+.choice-placeholder {
+    visibility: hidden;
+    white-space: nowrap;
+}
+
+
+/*
+    This contains the visible typed letters.
+
+    Its width always matches the full button,
+    but the actual text begins at the calculated
+    left side of the centered complete word.
+*/
+
+.choice-typed {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    display: block;
+
+    width: max-content;
+
+    white-space: nowrap;
+
+    transform: translate(-50%, -50%);
+}
+
+
+/*
+    The buttons only become clickable after
+    every choice has finished typing.
+*/
+
+.choice-list.ready .choice-button {
+    cursor: pointer;
+}
+
+
+/*
+    Undertale-style selection color.
+*/
+
+.choice-list.ready .choice-button:hover,
+.choice-list.ready .choice-button:focus-visible,
+.choice-list.ready .choice-button.selected {
+    color: #ffff00;
+    outline: none;
+}
+
+
+/*
+    ---------------------------------------------------
+    PAGE TRANSITION
+    ---------------------------------------------------
+*/
+
+.fade-screen {
+    position: fixed;
+    inset: 0;
+
+    pointer-events: none;
+
+    background-color: #000000;
+    opacity: 0;
+
+    transition: opacity 1.25s ease;
+}
+
+.fade-screen.active {
+    opacity: 1;
+}
+
+
+/*
+    ---------------------------------------------------
+    SMALL SCREENS
+    ---------------------------------------------------
+*/
+
+@media (max-width: 680px) {
+
+    .completion-screen {
+        padding: 18px;
+    }
+
+    .dialogue-container {
+        grid-template-rows: 145px 180px;
+
+        width: 100%;
+        height: 325px;
+    }
+
+    .dialogue-area {
+        height: 145px;
+    }
+
+    .choice-list {
+        grid-template-columns: 1fr 1fr;
+
+        width: 100%;
+
+        column-gap: 8px;
+        row-gap: 24px;
+    }
+
+    .choice-button {
+        width: 160px;
+
+        font-size: clamp(15px, 4vw, 19px);
+    }
+}
+
+/*
+    ===================================================
+    COMPLETION DIALOGUE CENTERING
+    ===================================================
+*/
+
+.completion-dialogue-position {
+    position: relative;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+
+    width:
+        min(820px, 88vw);
+
+    min-height: 80px;
+}
+
+.completion-dialogue-measure {
+    position: absolute;
+
+    width: max-content;
+    max-width:
+        min(820px, 88vw);
+
+    margin: 0;
+
+    visibility: hidden;
+    pointer-events: none;
+
+    font-size:
+        clamp(17px, 1.7vw, 24px);
+
+    font-weight: bold;
+    line-height: 1.55;
+    letter-spacing: 1px;
+
+    white-space: pre-wrap;
+}
+
+#dialogue-text {
+    width: auto;
+    max-width:
+        min(820px, 88vw);
+
+    margin: 0;
+
+    font-size:
+        clamp(17px, 1.7vw, 24px);
+
+    font-weight: bold;
+    line-height: 1.55;
+    letter-spacing: 1px;
+
+    text-align: left;
+    white-space: pre-wrap;
+}
