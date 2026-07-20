@@ -6,7 +6,25 @@
     ELEMENTS
     ===================================================
 */
+const soundtrackBack =
+    document.getElementById(
+        "soundtrack-back"
+    );
 
+const volumeButton =
+    document.getElementById(
+        "volume-button"
+    );
+
+const volumePanel =
+    document.getElementById(
+        "volume-panel"
+    );
+
+const volumeSlider =
+    document.getElementById(
+        "volume-slider"
+    );
 const starField =
     document.getElementById("star-field");
 
@@ -269,6 +287,8 @@ const relicMusic = {
         document.getElementById(
             "music-invitation"
         ),
+
+        
 
     witness:
         document.getElementById(
@@ -1421,6 +1441,59 @@ function returnFromReading() {
     }, 620);
 }
 
+const allAudioElements = [
+    doorSound,
+    reliquaryMusic,
+    creditsNoise,
+    ...Object.values(relicMusic)
+].filter(Boolean);
+
+let masterVolume =
+    Number(volumeSlider.value) / 100;
+
+
+function applyMasterVolume() {
+    allAudioElements.forEach(
+        (audioElement) => {
+            const intendedVolume =
+                Number(
+                    audioElement.dataset
+                        .intendedVolume ?? 1
+                );
+
+            audioElement.volume =
+                intendedVolume *
+                masterVolume;
+        }
+    );
+}
+
+
+function setAudioVolume(
+    audioElement,
+    volume
+) {
+    if (!audioElement) {
+        return;
+    }
+
+    const clampedVolume =
+        clampVolume(volume);
+
+    audioElement.dataset.intendedVolume =
+        String(clampedVolume);
+
+    setAudioVolume(
+    audioElement,
+    startVolume +
+    (
+        endVolume -
+        startVolume
+    ) *
+    easedProgress
+);
+}
+
 
 /*
     ===================================================
@@ -1852,10 +1925,10 @@ async function startAudio(
         audioElement
     );
 
-    audioElement.volume =
-        clampVolume(
-            startingVolume
-        );
+    setAudioVolume(
+    audioElement,
+    startingVolume
+);
 
     try {
         audioElement.pause();
@@ -1923,13 +1996,11 @@ function fadeAudio(
                 3
             );
 
-        audioElement.volume =
-            startVolume +
-            (
-                endVolume -
-                startVolume
-            ) *
-            easedProgress;
+        
+            setAudioVolume(
+    audioElement,
+    endVolume
+);
 
         if (progress < 1) {
             const frame =
@@ -1949,8 +2020,12 @@ function fadeAudio(
             audioElement
         );
 
-        audioElement.volume =
-            endVolume;
+       const startVolume =
+    Number(
+        audioElement.dataset
+            .intendedVolume ??
+        audioElement.volume
+    );
 
         if (
             stopAtEnd &&
@@ -2033,32 +2108,48 @@ function typeEndingText(element, text, speed, done) {
 
 
 function beginSoundtrackEnding() {
-
     soundtrackEnd.hidden = false;
 
-    setTimeout(() => {
+    rememberText.textContent = "";
+    soundtrackLink.textContent = "";
 
+    soundtrackBack.hidden = true;
+    soundtrackBack.classList.remove(
+        "visible"
+    );
+
+    setTimeout(() => {
         typeEndingText(
             rememberText,
             "SHOULD YOU WISH TO REMEMBER.",
             65,
             () => {
-
                 setTimeout(() => {
-
                     typeEndingText(
                         soundtrackLink,
                         "ORIGINAL SOUNDTRACK",
-                        65
+                        65,
+                        () => {
+                            setTimeout(() => {
+                                soundtrackBack.hidden =
+                                    false;
+
+                                requestAnimationFrame(
+                                    () => {
+                                        soundtrackBack
+                                            .classList
+                                            .add(
+                                                "visible"
+                                            );
+                                    }
+                                );
+                            }, 900);
+                        }
                     );
-
                 }, 800);
-
             }
         );
-
     }, 3000);
-
 }
 
 
@@ -2067,6 +2158,42 @@ function beginSoundtrackEnding() {
     EVENTS
     ===================================================
 */
+
+soundtrackBack.addEventListener(
+    "click",
+    () => {
+        window.history.back();
+    }
+);
+volumeButton.addEventListener(
+    "click",
+    () => {
+        const willOpen =
+            volumePanel.hidden;
+
+        volumePanel.hidden =
+            !willOpen;
+
+        volumeButton.setAttribute(
+            "aria-expanded",
+            String(willOpen)
+        );
+    }
+);
+
+
+volumeSlider.addEventListener(
+    "input",
+    () => {
+        masterVolume =
+            Number(
+                volumeSlider.value
+            ) / 100;
+
+        applyMasterVolume();
+    }
+);
+
 
 doorButton.addEventListener(
     "click",

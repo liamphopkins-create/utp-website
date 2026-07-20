@@ -425,7 +425,7 @@
 
 
 
-   <div id="soundtrack-end" hidden>
+ <div id="soundtrack-end" hidden>
 
     <p id="remember-text"></p>
 
@@ -436,7 +436,44 @@
         rel="noopener noreferrer"
     ></a>
 
+    <button
+        id="soundtrack-back"
+        type="button"
+        hidden
+    >
+        BACK
+    </button>
+
 </div>
+
+
+<div id="volume-control">
+
+    <button
+        id="volume-button"
+        type="button"
+        aria-expanded="false"
+        aria-controls="volume-panel"
+    >
+        VOLUME
+    </button>
+
+    <div
+        id="volume-panel"
+        hidden
+    >
+        <input
+            id="volume-slider"
+            type="range"
+            min="0"
+            max="100"
+            value="70"
+            aria-label="Volume"
+        >
+    </div>
+
+</div>
+
 
 <script src="reliquary.js"></script>
 

@@ -1793,3 +1793,171 @@ img {
 #soundtrack-link:hover {
     color: #ffff00;
 }
+
+/*
+    ===================================================
+    SOUNDTRACK ENDING
+    ===================================================
+*/
+
+#soundtrack-end {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    background: #000000;
+    color: #ffffff;
+
+    text-align: center;
+}
+
+#soundtrack-end[hidden] {
+    display: none;
+}
+
+#remember-text {
+    min-height: 1.5em;
+
+    margin:
+        0
+        0
+        28px;
+
+    font-size:
+        clamp(20px, 2vw, 30px);
+
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+#soundtrack-link {
+    min-height: 1.5em;
+
+    color: #ffffff;
+
+    font-size:
+        clamp(22px, 2.2vw, 32px);
+
+    font-weight: bold;
+    letter-spacing: 1px;
+
+    text-decoration: underline;
+    text-underline-offset: 6px;
+
+    transition:
+        color 150ms ease;
+}
+
+#soundtrack-link:hover,
+#soundtrack-link:focus-visible {
+    color: #ffff00;
+}
+
+#soundtrack-back {
+    margin-top: 42px;
+    padding: 7px 14px;
+
+    border: 0;
+
+    background: transparent;
+    color: rgba(255, 255, 255, 0.72);
+
+    font: inherit;
+    font-size: 19px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+
+    cursor: pointer;
+
+    opacity: 0;
+
+    transition:
+        opacity 900ms ease,
+        color 150ms ease;
+}
+
+#soundtrack-back.visible {
+    opacity: 1;
+}
+
+#soundtrack-back:hover,
+#soundtrack-back:focus-visible {
+    color: #ffff00;
+}
+
+#soundtrack-back[hidden] {
+    display: none;
+}
+
+
+/*
+    ===================================================
+    VOLUME CONTROL
+    ===================================================
+*/
+
+#volume-control {
+    position: fixed;
+    right: 24px;
+    bottom: 22px;
+    z-index: 10001;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    font-family:
+        "Courier New",
+        Courier,
+        monospace;
+}
+
+#volume-button {
+    padding: 7px 10px;
+
+    border: 0;
+
+    background: transparent;
+    color: rgba(255, 255, 255, 0.72);
+
+    font: inherit;
+    font-weight: bold;
+    letter-spacing: 1px;
+
+    cursor: pointer;
+
+    transition:
+        color 150ms ease;
+}
+
+#volume-button:hover,
+#volume-button:focus-visible {
+    color: #ffff00;
+}
+
+#volume-panel {
+    margin-bottom: 10px;
+    padding: 10px 12px;
+
+    border: 2px solid #ffffff;
+
+    background: #000000;
+}
+
+#volume-panel[hidden] {
+    display: none;
+}
+
+#volume-slider {
+    display: block;
+
+    width: 150px;
+
+    accent-color: #ffffff;
+    cursor: pointer;
+}
