@@ -422,60 +422,51 @@
         loop
     ></audio>
 
+    <div id="soundtrack-end" hidden>
+        <p id="remember-text"></p>
 
+        <a
+            id="soundtrack-link"
+            href="https://youtube.com/playlist?list=PLGmXJL9mH-vE&si=1ch_hXn9qkR9vegV"
+            target="_blank"
+            rel="noopener noreferrer"
+        ></a>
 
-
- <div id="soundtrack-end" hidden>
-
-    <p id="remember-text"></p>
-
-    <a
-        id="soundtrack-link"
-        href="https://youtube.com/playlist?list=PLGmXJL9mH-vE&si=1ch_hXn9qkR9vegV"
-        target="_blank"
-        rel="noopener noreferrer"
-    ></a>
-
-    <button
-        id="soundtrack-back"
-        type="button"
-        hidden
-    >
-        BACK
-    </button>
-
-</div>
-
-
-<div id="volume-control">
-
-    <button
-        id="volume-button"
-        type="button"
-        aria-expanded="false"
-        aria-controls="volume-panel"
-    >
-        VOLUME
-    </button>
-
-    <div
-        id="volume-panel"
-        hidden
-    >
-        <input
-            id="volume-slider"
-            type="range"
-            min="0"
-            max="100"
-            value="70"
-            aria-label="Volume"
+        <button
+            id="soundtrack-back"
+            type="button"
+            hidden
         >
+            BACK
+        </button>
     </div>
 
-</div>
+    <div id="volume-control">
+        <div
+            id="volume-panel"
+            hidden
+        >
+            <input
+                id="volume-slider"
+                type="range"
+                min="0"
+                max="100"
+                value="70"
+                aria-label="Volume"
+            >
+        </div>
 
+        <button
+            id="volume-button"
+            type="button"
+            aria-expanded="false"
+            aria-controls="volume-panel"
+        >
+            VOLUME: 70%
+        </button>
+    </div>
 
-<script src="reliquary.js"></script>
+    <script src="reliquary.js"></script>
 
 </body>
 </html>

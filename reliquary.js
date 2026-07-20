@@ -6,25 +6,7 @@
     ELEMENTS
     ===================================================
 */
-const soundtrackBack =
-    document.getElementById(
-        "soundtrack-back"
-    );
 
-const volumeButton =
-    document.getElementById(
-        "volume-button"
-    );
-
-const volumePanel =
-    document.getElementById(
-        "volume-panel"
-    );
-
-const volumeSlider =
-    document.getElementById(
-        "volume-slider"
-    );
 const starField =
     document.getElementById("star-field");
 
@@ -87,6 +69,22 @@ const doorSound =
 
 const creditsNoise =
     document.getElementById("credits-noise");
+
+
+const soundtrackBack =
+    document.getElementById("soundtrack-back");
+
+const volumeControl =
+    document.getElementById("volume-control");
+
+const volumeButton =
+    document.getElementById("volume-button");
+
+const volumePanel =
+    document.getElementById("volume-panel");
+
+const volumeSlider =
+    document.getElementById("volume-slider");
 
 
 /*
@@ -288,8 +286,6 @@ const relicMusic = {
             "music-invitation"
         ),
 
-        
-
     witness:
         document.getElementById(
             "music-witness"
@@ -357,6 +353,78 @@ if (creditsNoise) {
 
 const audioFadeFrames =
     new Map();
+
+
+/*
+    ===================================================
+    MASTER VOLUME
+    ===================================================
+*/
+
+const allAudioElements = [
+    doorSound,
+    reliquaryMusic,
+    creditsNoise,
+    ...Object.values(relicMusic)
+].filter(Boolean);
+
+let masterVolume =
+    Number(volumeSlider.value) / 100;
+
+
+function clampVolume(volume) {
+    return Math.max(
+        0,
+        Math.min(
+            1,
+            Number(volume) || 0
+        )
+    );
+}
+
+
+function setAudioVolume(
+    audioElement,
+    intendedVolume
+) {
+    if (!audioElement) {
+        return;
+    }
+
+    const safeVolume =
+        clampVolume(
+            intendedVolume
+        );
+
+    audioElement.dataset.intendedVolume =
+        String(safeVolume);
+
+    audioElement.volume =
+        clampVolume(
+            safeVolume *
+            masterVolume
+        );
+}
+
+
+function applyMasterVolume() {
+    allAudioElements.forEach(
+        (audioElement) => {
+            const intendedVolume =
+                Number(
+                    audioElement.dataset
+                        .intendedVolume ??
+                    1
+                );
+
+            audioElement.volume =
+                clampVolume(
+                    intendedVolume *
+                    masterVolume
+                );
+        }
+    );
+}
 
 
 /*
@@ -803,8 +871,17 @@ function enterReliquary() {
         "removed"
     );
 
+    cancelAudioFade(
+        doorSound
+    );
+
+    doorSound.pause();
     doorSound.currentTime = 0;
-    doorSound.volume = 0.92;
+
+    setAudioVolume(
+        doorSound,
+        0.92
+    );
 
     doorSound.play().catch(() => {});
 
@@ -1441,59 +1518,6 @@ function returnFromReading() {
     }, 620);
 }
 
-const allAudioElements = [
-    doorSound,
-    reliquaryMusic,
-    creditsNoise,
-    ...Object.values(relicMusic)
-].filter(Boolean);
-
-let masterVolume =
-    Number(volumeSlider.value) / 100;
-
-
-function applyMasterVolume() {
-    allAudioElements.forEach(
-        (audioElement) => {
-            const intendedVolume =
-                Number(
-                    audioElement.dataset
-                        .intendedVolume ?? 1
-                );
-
-            audioElement.volume =
-                intendedVolume *
-                masterVolume;
-        }
-    );
-}
-
-
-function setAudioVolume(
-    audioElement,
-    volume
-) {
-    if (!audioElement) {
-        return;
-    }
-
-    const clampedVolume =
-        clampVolume(volume);
-
-    audioElement.dataset.intendedVolume =
-        String(clampedVolume);
-
-    setAudioVolume(
-    audioElement,
-    startVolume +
-    (
-        endVolume -
-        startVolume
-    ) *
-    easedProgress
-);
-}
-
 
 /*
     ===================================================
@@ -1803,9 +1827,17 @@ function playCreditsNoise() {
         return;
     }
 
+    cancelAudioFade(
+        creditsNoise
+    );
+
     creditsNoise.pause();
     creditsNoise.currentTime = 0;
-    creditsNoise.volume = 0.9;
+
+    setAudioVolume(
+        creditsNoise,
+        0.9
+    );
 
     creditsNoise.play().catch(() => {});
 }
@@ -1925,15 +1957,15 @@ async function startAudio(
         audioElement
     );
 
+    audioElement.pause();
+    audioElement.currentTime = 0;
+
     setAudioVolume(
-    audioElement,
-    startingVolume
-);
+        audioElement,
+        startingVolume
+    );
 
     try {
-        audioElement.pause();
-        audioElement.currentTime = 0;
-
         await audioElement.play();
 
         return true;
@@ -1965,7 +1997,11 @@ function fadeAudio(
     );
 
     const startVolume =
-        audioElement.volume;
+        Number(
+            audioElement.dataset
+                .intendedVolume ??
+            0
+        );
 
     const endVolume =
         clampVolume(
@@ -1996,11 +2032,18 @@ function fadeAudio(
                 3
             );
 
-        
-            setAudioVolume(
-    audioElement,
-    endVolume
-);
+        const currentVolume =
+            startVolume +
+            (
+                endVolume -
+                startVolume
+            ) *
+            easedProgress;
+
+        setAudioVolume(
+            audioElement,
+            currentVolume
+        );
 
         if (progress < 1) {
             const frame =
@@ -2020,12 +2063,10 @@ function fadeAudio(
             audioElement
         );
 
-       const startVolume =
-    Number(
-        audioElement.dataset
-            .intendedVolume ??
-        audioElement.volume
-    );
+        setAudioVolume(
+            audioElement,
+            endVolume
+        );
 
         if (
             stopAtEnd &&
@@ -2070,40 +2111,50 @@ function cancelAudioFade(
     }
 }
 
+function typeEndingText(
+    element,
+    text,
+    speed,
+    done
+) {
+    if (!element) {
+        if (done) {
+            done();
+        }
 
-function clampVolume(volume) {
-    return Math.max(
-        0,
-        Math.min(
-            1,
-            volume
-        )
-    );
-}
-
-function typeEndingText(element, text, speed, done) {
+        return;
+    }
 
     element.textContent = "";
 
-    let i = 0;
+    let characterIndex = 0;
 
-    function next() {
-
-        if (i >= text.length) {
-
-            if (done) done();
+    function typeNextCharacter() {
+        if (
+            characterIndex >=
+            text.length
+        ) {
+            if (done) {
+                done();
+            }
 
             return;
         }
 
-        element.textContent += text[i];
+        element.textContent +=
+            text.charAt(
+                characterIndex
+            );
 
-        i++;
+        characterIndex += 1;
 
-        setTimeout(next, speed);
+        setTimeout(
+            typeNextCharacter,
+            speed
+        );
     }
 
-    next();
+    typeNextCharacter();
 }
 
 
@@ -2114,6 +2165,7 @@ function beginSoundtrackEnding() {
     soundtrackLink.textContent = "";
 
     soundtrackBack.hidden = true;
+
     soundtrackBack.classList.remove(
         "visible"
     );
@@ -2136,11 +2188,15 @@ function beginSoundtrackEnding() {
 
                                 requestAnimationFrame(
                                     () => {
-                                        soundtrackBack
-                                            .classList
-                                            .add(
-                                                "visible"
-                                            );
+                                        requestAnimationFrame(
+                                            () => {
+                                                soundtrackBack
+                                                    .classList
+                                                    .add(
+                                                        "visible"
+                                                    );
+                                            }
+                                        );
                                     }
                                 );
                             }, 900);
@@ -2153,31 +2209,69 @@ function beginSoundtrackEnding() {
 }
 
 
+function updateVolumeDisplay() {
+    const percentage =
+        Number(
+            volumeSlider.value
+        );
+
+    volumeSlider.style.setProperty(
+        "--volume-fill",
+        `${percentage}%`
+    );
+
+    volumeButton.textContent =
+        percentage === 0
+            ? "VOLUME: OFF"
+            : `VOLUME: ${percentage}%`;
+}
+
+
 /*
     ===================================================
     EVENTS
     ===================================================
 */
 
+
 soundtrackBack.addEventListener(
     "click",
-    () => {
+    (event) => {
+        event.stopPropagation();
+
         window.history.back();
     }
 );
+
+
 volumeButton.addEventListener(
     "click",
-    () => {
-        const willOpen =
+    (event) => {
+        event.stopPropagation();
+
+        const opening =
             volumePanel.hidden;
 
         volumePanel.hidden =
-            !willOpen;
+            !opening;
+
+        volumeControl.classList.toggle(
+            "open",
+            opening
+        );
 
         volumeButton.setAttribute(
             "aria-expanded",
-            String(willOpen)
+            String(opening)
         );
+    }
+);
+
+
+volumePanel.addEventListener(
+    "pointerup",
+    (event) => {
+        event.stopPropagation();
     }
 );
 
@@ -2191,6 +2285,7 @@ volumeSlider.addEventListener(
             ) / 100;
 
         applyMasterVolume();
+        updateVolumeDisplay();
     }
 );
 
@@ -2252,6 +2347,12 @@ document.addEventListener(
             ) ||
             event.target.closest(
                 ".return-button"
+            ) ||
+            event.target.closest(
+                "#volume-control"
+            ) ||
+            event.target.closest(
+                "#soundtrack-end"
             )
         ) {
             return;
